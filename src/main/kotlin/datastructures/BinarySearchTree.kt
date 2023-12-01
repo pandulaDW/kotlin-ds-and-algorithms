@@ -1,7 +1,12 @@
 package datastructures
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
 class BinarySearchTree(vararg initData: Int) {
-    class Node(val data: Int, var left: Node? = null, var right: Node? = null)
+    @Serializable
+    data class Node(val data: Int, var left: Node? = null, var right: Node? = null)
 
     private var root: Node? = null;
 
@@ -19,8 +24,10 @@ class BinarySearchTree(vararg initData: Int) {
         }
 
         var current = root
-        while (current != null) {
-            if (data < current.data) {
+        while (true) {
+            if (data == current?.data) {
+                return
+            } else if (data < current?.data!!) {
                 if (current.left == null) {
                     current.left = newNode
                     break
@@ -36,5 +43,23 @@ class BinarySearchTree(vararg initData: Int) {
                 }
             }
         }
+    }
+
+    fun contains(data: Int): Boolean {
+        var current = root
+        while (current != null) {
+            current = if (data == current.data) {
+                return true
+            } else if (data < current.data) {
+                current.left
+            } else {
+                current.right
+            }
+        }
+        return false
+    }
+
+    override fun toString(): String {
+        return Json.encodeToString(root)
     }
 }
