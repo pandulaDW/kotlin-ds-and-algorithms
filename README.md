@@ -4,5 +4,6 @@ Includes the below datastructures
 - LinkedList
 - Doubly LinkedList
 - Binary Search Tree
+- HashMap
 
 Includes the below algorithms
