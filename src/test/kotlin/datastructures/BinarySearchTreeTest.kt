@@ -2,7 +2,6 @@ package datastructures
 
 import kotlin.test.*
 import org.junit.jupiter.api.BeforeEach
-import kotlin.test.Test
 
 class BinarySearchTreeTest {
     private var tree: BinarySearchTree? = null
@@ -30,6 +29,7 @@ class BinarySearchTreeTest {
     @Test
     fun string() {
         val expected = """{"data":10,"left":{"data":8,"left":{"data":1}},"right":{"data":15}}"""
+        var actual = tree.toString()
         assertEquals(expected, tree.toString())
     }
 }

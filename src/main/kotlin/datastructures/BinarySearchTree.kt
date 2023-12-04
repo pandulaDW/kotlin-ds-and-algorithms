@@ -6,7 +6,7 @@ import kotlinx.serialization.json.Json
 
 class BinarySearchTree(vararg initData: Int) {
     @Serializable
-    data class Node(val data: Int, var left: Node? = null, var right: Node? = null)
+    private data class Node(val data: Int, var left: Node? = null, var right: Node? = null)
 
     private var root: Node? = null;
 
