@@ -3,9 +3,9 @@ package datastructures
 import java.lang.IndexOutOfBoundsException
 
 class HashMap(private val size: Int = 7) {
-    private val dataMap = Array(size) { Node("", 0) }
+    private val dataMap = Array(size) { Node("") }
 
-    private data class Node(val key: String, val value: Int, var next: Node? = null) {
+    private data class Node(val key: String, val value: Int = 0, var next: Node? = null) {
         fun isEmpty(): Boolean {
             return key.isEmpty()
         }
@@ -37,6 +37,10 @@ class HashMap(private val size: Int = 7) {
         } catch (_: IndexOutOfBoundsException) {
             return null
         }
+    }
+
+    fun has(key: String): Boolean {
+        return get(key) != null
     }
 
     fun keys(): ArrayList<String> {
@@ -83,4 +87,34 @@ class HashMap(private val size: Int = 7) {
         }
         return builder.toString()
     }
+}
+
+fun <T> itemInCommon(array1: ArrayList<T>, array2: ArrayList<T>): Boolean {
+    val m = HashMap()
+    for (item in array1) {
+        m.set(item.toString(), 0)
+    }
+
+    for (item in array2) {
+        if (m.get(item.toString()) != null) {
+            return true
+        }
+    }
+
+    return false
+}
+
+fun <T> findDuplicates(array: ArrayList<T>): ArrayList<T> {
+    val m = HashMap()
+    val duplicates = arrayListOf<T>()
+
+    for (item in array) {
+        if (m.has(item.toString())) {
+            duplicates.add(item)
+        } else {
+            m.set(item.toString(), 0)
+        }
+    }
+
+    return duplicates
 }

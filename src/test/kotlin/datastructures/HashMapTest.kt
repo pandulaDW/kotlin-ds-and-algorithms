@@ -35,6 +35,21 @@ class HashMapTest {
     }
 
     @Test
+    fun itemInCommon() {
+        val items1 = arrayListOf('a', 'b', 'e')
+        val items2 = arrayListOf('a', 'd', 'b', 's')
+        assertTrue { itemInCommon(items1, items2) }
+    }
+
+    @Test
+    fun findDuplicates() {
+        val items1 = arrayListOf('a', 'b', 'e', 'a', 's', 'e')
+        val actual = findDuplicates(items1)
+        actual.sort()
+        assertContentEquals(arrayListOf('a', 'e'), actual)
+    }
+
+    @Test
     fun hash() {
         val hash = HashMap.hash("juxtaposition", 7)
         assertEquals(5, hash)
