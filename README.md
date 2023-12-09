@@ -5,5 +5,7 @@ Includes the below datastructures
 - Doubly LinkedList
 - Binary Search Tree
 - HashMap
+- Graph
+- Heap
 
 Includes the below algorithms
