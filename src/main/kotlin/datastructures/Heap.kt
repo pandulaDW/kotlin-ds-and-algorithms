@@ -1,5 +1,8 @@
 package datastructures
 
+import java.lang.StringBuilder
+import kotlin.math.max
+
 class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) {
     private val heapArray = arrayListOf<T?>(null)
 
@@ -83,29 +86,78 @@ class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) 
         return (parentIdx * 2) + 1
     }
 
-    override fun toString(): String {
-        val buf = StringBuilder()
-        var totalDepth = 0
+    fun depth(): Int {
+        var maxDepth = 0
 
-        fun construct(currentIdx: Int, currentDepth: Int) {
-            totalDepth += 1
-            val currentDepthTemp = currentDepth + 1 // kotlin: no mutable fn params
+        fun findDepth(currentIdx: Int, depth: Int) {
+            maxDepth = max(maxDepth, depth + 1)
 
-            val leftChild = leftChildIdx(currentIdx)
-            if (leftChild < heapArray.size) {
-                construct(leftChild, currentDepthTemp)
+            // on initial visit to the node, we prefer the left
+            if (heapArray.getOrNull(leftChildIdx(currentIdx)) != null) {
+                findDepth(leftChildIdx(currentIdx), depth + 1)
+            } else if (heapArray.getOrNull(rightChildIdx(currentIdx)) != null) {
+                findDepth(rightChildIdx(currentIdx), depth + 1)
             }
 
-            buf.append("${" ".repeat(totalDepth - currentDepth)}${heapArray[currentIdx]}")
-
-            val rightChild = rightChildIdx(currentIdx)
-            if (rightChild < heapArray.size) {
-                construct(rightChild, currentDepthTemp)
+            // on subsequent visit to the node, we defer only to the right
+            if (heapArray.getOrNull(rightChildIdx(currentIdx)) != null) {
+                findDepth(rightChildIdx(currentIdx), depth + 1)
             }
         }
 
-        construct(1, 1)
+        findDepth(1, 0)
+        return maxDepth
+    }
 
-        return buf.toString()
+    override fun toString(): String {
+        val buckets = arrayListOf<ArrayList<T>>()
+
+        fun putToBucket(depth: Int, value: T) {
+            val applicableBucket = buckets.getOrNull(depth)
+            if (applicableBucket != null) applicableBucket.add(value)
+            else buckets.add(arrayListOf(value))
+        }
+
+        fun traverseNode(currentIdx: Int, depth: Int) {
+            putToBucket(depth, heapArray[currentIdx]!!)
+
+            // on initial visit to the node, we prefer the left
+            if (heapArray.getOrNull(leftChildIdx(currentIdx)) != null) {
+                traverseNode(leftChildIdx(currentIdx), depth + 1)
+            } else if (heapArray.getOrNull(rightChildIdx(currentIdx)) != null) {
+                traverseNode(rightChildIdx(currentIdx), depth + 1)
+            }
+
+            // on subsequent visit to the node, we defer only to the right
+            if (heapArray.getOrNull(rightChildIdx(currentIdx)) != null) {
+                traverseNode(rightChildIdx(currentIdx), depth + 1)
+            }
+        }
+
+        // populate the buckets
+        traverseNode(1, 0)
+
+        // consolidate the buckets in a string
+//        val maxDepth = buckets.size
+        val s = StringBuilder()
+        for (bucket in buckets.withIndex()) {
+            for (item in bucket.value.withIndex()) {
+                if (bucket.index == 0) {
+                    s.append("${" ".repeat(9)}${item.value}")
+                }
+                if (bucket.index == 1) {
+                    s.append("${" ".repeat(6)}${item.value}")
+                }
+                if (bucket.index == 2) {
+                    s.append("${" ".repeat(3)}${item.value}")
+                }
+                if (bucket.index == 3) {
+                    s.append("${" ".repeat(1)}${item.value}")
+                }
+            }
+            s.appendLine()
+        }
+
+        return s.toString()
     }
 }

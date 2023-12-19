@@ -56,6 +56,21 @@ class HeapTest {
         assertContentEquals(arrayListOf(null, 55, 75, 60, 80), h.heapArray())
     }
 
+    @Test
+    fun depth() {
+        var h = createHeap(SortOrder.Max, 4)
+        assertEquals(1, h.depth())
+
+        h = createHeap(SortOrder.Max, 14, 5, 1)
+        assertEquals(2, h.depth())
+
+        h = createHeap(SortOrder.Max, 90, 58, 72, 61, 55, 100, 101, 23, -10, 15, 33, 155, 98, 17)
+        assertEquals(4, h.depth())
+
+        h = createHeap(SortOrder.Min, 90, 58, 72, 61, 55, 100, 101, 23, -10, 15, 33, 155, 98, 17)
+        assertEquals(4, h.depth())
+    }
+
     private fun <T : Comparable<T>> createHeap(sortOrder: SortOrder, vararg items: T): Heap<T> {
         val h = Heap<T>(sortOrder)
         for (item in items) {
