@@ -2,9 +2,9 @@ import datastructures.Heap
 import datastructures.SortOrder
 
 fun main() {
-    val h = Heap<Int>(SortOrder.Max)
+    val h = Heap<Char>(SortOrder.Max)
 
-    val l = arrayListOf(90, 58, 72, 61, 55, 100, 101, -10, 33)
+    val l = arrayListOf('a', 'b', 'c', 'z', 'x')
     l.forEach { h.insert(it) }
 
 //    h.removeRoot()

@@ -95,11 +95,8 @@ class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) 
             // on initial visit to the node, we prefer the left
             if (heapArray.getOrNull(leftChildIdx(currentIdx)) != null) {
                 findDepth(leftChildIdx(currentIdx), depth + 1)
-            } else if (heapArray.getOrNull(rightChildIdx(currentIdx)) != null) {
-                findDepth(rightChildIdx(currentIdx), depth + 1)
             }
-
-            // on subsequent visit to the node, we defer only to the right
+            // on subsequent visit to the node, we defer to the right
             if (heapArray.getOrNull(rightChildIdx(currentIdx)) != null) {
                 findDepth(rightChildIdx(currentIdx), depth + 1)
             }
@@ -112,23 +109,16 @@ class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) 
     override fun toString(): String {
         val buckets = arrayListOf<ArrayList<T>>()
 
-        fun putToBucket(depth: Int, value: T) {
-            val applicableBucket = buckets.getOrNull(depth)
-            if (applicableBucket != null) applicableBucket.add(value)
-            else buckets.add(arrayListOf(value))
-        }
-
         fun traverseNode(currentIdx: Int, depth: Int) {
-            putToBucket(depth, heapArray[currentIdx]!!)
+            val applicableBucket = buckets.getOrNull(depth)
+            if (applicableBucket != null) applicableBucket.add(heapArray[currentIdx]!!)
+            else buckets.add(arrayListOf(heapArray[currentIdx]!!))
 
             // on initial visit to the node, we prefer the left
             if (heapArray.getOrNull(leftChildIdx(currentIdx)) != null) {
                 traverseNode(leftChildIdx(currentIdx), depth + 1)
-            } else if (heapArray.getOrNull(rightChildIdx(currentIdx)) != null) {
-                traverseNode(rightChildIdx(currentIdx), depth + 1)
             }
-
-            // on subsequent visit to the node, we defer only to the right
+            // on subsequent visit to the node, we defer to the right
             if (heapArray.getOrNull(rightChildIdx(currentIdx)) != null) {
                 traverseNode(rightChildIdx(currentIdx), depth + 1)
             }
@@ -138,7 +128,6 @@ class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) 
         traverseNode(1, 0)
 
         // consolidate the buckets in a string
-//        val maxDepth = buckets.size
         val s = StringBuilder()
         for (bucket in buckets.withIndex()) {
             for (item in bucket.value.withIndex()) {
