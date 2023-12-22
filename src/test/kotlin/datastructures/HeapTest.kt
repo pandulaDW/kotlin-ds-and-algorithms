@@ -71,6 +71,36 @@ class HeapTest {
         assertEquals(4, h.depth())
     }
 
+    @Test
+    fun findKthSmallest() {
+        var actual = findKthSmallest(arrayListOf(7, 10, 4, 3, 20, 15), 3)
+        assertEquals(7, actual)
+
+        actual = findKthSmallest(arrayListOf(2, 1, 3, 5, 6, 4), 2)
+        assertEquals(2, actual)
+
+        actual = findKthSmallest(arrayListOf(9, 3, 2, 11, 7, 10, 4, 5), 5)
+        assertEquals(7, actual)
+
+        actual = findKthSmallest(arrayListOf(9), 1)
+        assertEquals(9, actual)
+
+        actual = findKthSmallest(arrayListOf(9, 9, 10), 2)
+        assertEquals(9, actual)
+    }
+
+    @Test
+    fun streamMax() {
+        var actual = streamMax(arrayListOf(1, 5, 2, 9, 3, 6, 8))
+        assertContentEquals(arrayListOf(1, 5, 5, 9, 9, 9, 9), actual)
+
+        actual = streamMax(arrayListOf(10, 2, 5, 1, 0, 11, 6))
+        assertContentEquals(arrayListOf(10, 10, 10, 10, 10, 11, 11), actual)
+
+        actual = streamMax(arrayListOf(3, 3, 3, 3, 3))
+        assertContentEquals(arrayListOf(3, 3, 3, 3, 3), actual)
+    }
+
     private fun <T : Comparable<T>> createHeap(sortOrder: SortOrder, vararg items: T): Heap<T> {
         val h = Heap<T>(sortOrder)
         for (item in items) {

@@ -5,9 +5,11 @@ import kotlin.math.max
 
 class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) {
     private val heapArray = arrayListOf<T?>(null)
+    private var size = 0
 
     fun insert(value: T) {
         heapArray.add(value)
+        size += 1
         var currentIdx = heapArray.size - 1
         var parentIdx = parentIndex(currentIdx)
 
@@ -18,10 +20,11 @@ class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) 
         }
     }
 
-    fun remove(value: T) {
-        // find the idx position of the value
-        var currentIdx = heapArray.indexOf(value)
+    fun remove(value: T, index: Int? = null) {
+        // find the idx position of the value if an index is not given
+        var currentIdx = index ?: heapArray.indexOf(value)
         if (currentIdx == -1 || currentIdx == 0) return
+        size = -1
 
         // swap this value with the last item and pop this value off the heap
         swapIndices(currentIdx, heapArray.size - 1)
@@ -54,18 +57,22 @@ class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) 
 
     fun removeRoot() {
         val rootVal = heapArray.getOrNull(1)
-        if (rootVal != null) remove(rootVal)
+        if (rootVal != null) remove(rootVal, 1)
     }
 
     fun heapArray(): ArrayList<T?> {
         return ArrayList(heapArray)
     }
 
+    fun root(): T? {
+        return heapArray.getOrNull(1)
+    }
+
     private fun isLessOrMore(val1: T, val2: T): Boolean {
         if (sortOrder == SortOrder.Max) {
-            return val1 < val2
+            return val1 <= val2
         }
-        return val1 > val2
+        return val1 >= val2
     }
 
     private fun swapIndices(index1: Int, index2: Int) {
@@ -149,4 +156,31 @@ class Heap<T : Comparable<T>>(private val sortOrder: SortOrder = SortOrder.Max) 
 
         return s.toString()
     }
+}
+
+fun <T : Comparable<T>> findKthSmallest(nums: ArrayList<T>, k: Int): T? {
+    val h = Heap<T>(SortOrder.Min)
+    for (v in nums) {
+        h.insert(v)
+    }
+
+    var count = 0
+    while (count < k - 1) {
+        h.removeRoot()
+        count += 1
+    }
+
+    return h.root()
+}
+
+fun <T : Comparable<T>> streamMax(nums: ArrayList<T>): ArrayList<T> {
+    val h = Heap<T>(SortOrder.Max)
+    val out = arrayListOf<T>()
+
+    for (v in nums) {
+        h.insert(v)
+        out.add(h.root()!!)
+    }
+
+    return out
 }
