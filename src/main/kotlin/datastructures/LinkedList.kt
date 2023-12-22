@@ -5,7 +5,7 @@ class LinkedList<T>(vararg initData: T) {
 
     private var head: Node<T>? = null
     private var tail: Node<T>? = null
-    private var length = 0
+    private var size = 0
 
     init {
         for (data in initData) {
@@ -15,26 +15,26 @@ class LinkedList<T>(vararg initData: T) {
 
     fun append(data: T) {
         val newNode = Node(data)
-        if (length == 0) {
+        if (size == 0) {
             head = newNode
             tail = newNode
         } else {
             tail?.next = newNode
             tail = newNode
         }
-        length++
+        size++
     }
 
     fun prepend(data: T) {
         val newNode = Node(data)
-        if (length == 0) {
+        if (size == 0) {
             head = newNode
             tail = newNode
         } else {
             newNode.next = head
             head = newNode
         }
-        length++
+        size++
     }
 
     fun removeLast(): Node<T>? {
@@ -48,7 +48,7 @@ class LinkedList<T>(vararg initData: T) {
         tail = current
         tail?.next = null
         if (current == null) head = null
-        length = if (length == 0) 0 else length - 1
+        size = if (size == 0) 0 else size - 1
 
         return returned
     }
@@ -59,13 +59,13 @@ class LinkedList<T>(vararg initData: T) {
         currentHead?.next = null
         head = newHead
         if (newHead == null) tail = null
-        length = if (length == 0) 0 else length - 1
+        size = if (size == 0) 0 else size - 1
         return currentHead
     }
 
     fun get(index: Int): Node<T>? {
-        if (index < 0 || index >= length) {
-            throw IndexOutOfBoundsException("Index should be >= 0 and < $length")
+        if (index < 0 || index >= size) {
+            throw IndexOutOfBoundsException("Index should be >= 0 and < $size")
         }
         var current = head
         repeat(index) {
@@ -87,7 +87,7 @@ class LinkedList<T>(vararg initData: T) {
         val previous = get(index - 1)
         val newNode = Node(value, previous?.next)
         previous?.next = newNode
-        length++
+        size++
     }
 
     fun remove(index: Int) {
@@ -99,7 +99,7 @@ class LinkedList<T>(vararg initData: T) {
         val current = previous?.next
         previous?.next = current?.next
         current?.next = null
-        length--
+        size--
     }
 
     fun reverse() {
@@ -131,8 +131,8 @@ class LinkedList<T>(vararg initData: T) {
         return "[ ${allData.joinToString(" -> ")} ]"
     }
 
-    fun length(): Int {
-        return length
+    fun size(): Int {
+        return size
     }
 
     fun head(): Node<T>? {
@@ -141,5 +141,13 @@ class LinkedList<T>(vararg initData: T) {
 
     fun tail(): Node<T>? {
         return tail?.copy()
+    }
+
+    fun findMiddleNode(): T? {
+        var current = head
+        repeat(size / 2) {
+            current = current?.next
+        }
+        return current?.data
     }
 }

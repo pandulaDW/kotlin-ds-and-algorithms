@@ -19,7 +19,7 @@ class LinkedListTest {
     fun prepend() {
         list?.prepend(101)
         list?.prepend(103)
-        assertEquals(5, list?.length())
+        assertEquals(5, list?.size())
         assertEquals(103, list?.head()?.data)
     }
 
@@ -27,38 +27,38 @@ class LinkedListTest {
     fun append() {
         list?.append(101)
         list?.append(103)
-        assertEquals(5, list?.length())
+        assertEquals(5, list?.size())
         assertEquals(103, list?.tail()?.data)
     }
 
     @Test
     fun removeLast() {
         assertEquals(list?.removeLast()?.data, 30)
-        assertEquals(2, list?.length())
+        assertEquals(2, list?.size())
 
         assertEquals(list?.removeLast()?.data, 20)
-        assertEquals(1, list?.length())
+        assertEquals(1, list?.size())
 
         assertEquals(list?.removeLast()?.data, 10)
-        assertEquals(0, list?.length())
+        assertEquals(0, list?.size())
 
         assertNull(list?.removeLast()?.data)
-        assertEquals(0, list?.length())
+        assertEquals(0, list?.size())
     }
 
     @Test
     fun removeFirst() {
         assertEquals(list?.removeFirst()?.data, 10)
-        assertEquals(2, list?.length())
+        assertEquals(2, list?.size())
 
         assertEquals(list?.removeFirst()?.data, 20)
-        assertEquals(1, list?.length())
+        assertEquals(1, list?.size())
 
         assertEquals(list?.removeLast()?.data, 30)
-        assertEquals(0, list?.length())
+        assertEquals(0, list?.size())
 
         assertNull(list?.removeLast()?.data)
-        assertEquals(0, list?.length())
+        assertEquals(0, list?.size())
     }
 
     @Test
@@ -123,6 +123,18 @@ class LinkedListTest {
         list?.removeLast()
         list?.reverse()
         assertEquals("[  ]", list.toString())
+    }
+
+    @Test
+    fun findMiddleNode() {
+        var l = LinkedList(1)
+        assertEquals(l.findMiddleNode(), 1)
+
+        l = LinkedList(1, 2, 3, 4, 5)
+        assertEquals(l.findMiddleNode(), 3)
+
+        l.append(6)
+        assertEquals(l.findMiddleNode(), 4)
     }
 
     @Test

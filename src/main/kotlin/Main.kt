@@ -1,7 +1,4 @@
-import datastructures.Heap
-import datastructures.SortOrder
-
 fun main() {
-    val h = Heap<Int>(SortOrder.Max)
-    println(h)
+    val m = 5
+    println((m / 2) + 1)
 }
